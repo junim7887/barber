@@ -1,0 +1,130 @@
+import os
+import sys
+
+
+class Usuario():
+    def __init__(self, nome, id, cartao):
+        self.nome = nome
+        self.id = id
+        self.cartao = cartao
+
+    def mostrar(self):
+        print('Usuario: {}\nID: {}\nCartão: {}'.format(self.nome, self.id, self.cartao))
+
+
+def cartaos():
+    acha = int(input('-> Consultar ID: '))
+    encontrado = False
+    for ids in user:
+        if acha == ids.id:
+            ids.cartao += 1
+            os.system('cls')
+            print('----------------------------------->')
+            ids.mostrar()
+            print('----------------------------------->\n')
+            if ids.cartao == 6:
+                ids.cartao = 'Ganhou!'
+                os.system('cls')
+                print('----------------------------------->')
+                ids.mostrar()
+                print('----------------------------------->\n')
+                ids.cartao = 0
+            encontrado = True
+    if not encontrado:
+        print('-> Não Localizado!')
+
+
+def localizar_id():
+    acha = int(input('-> Consultar ID: '))
+    encontrado = False
+    for ids in user:
+        if acha == ids.id:
+            os.system('cls')
+            print('----------------------------------->')
+            ids.mostrar()
+            print('----------------------------------->\n')
+            encontrado = True
+    if not encontrado:
+        print('-> Não Localizado!')
+
+
+user = []
+if os.path.isfile("users.txt"):
+    with open("users.txt", "r") as file:
+        for line in file:
+            line = line.strip()
+            if line.startswith("Nome:"):
+                nome = line.split(": ")[1]
+                line = file.readline().strip()
+                if line.startswith("ID:"):
+                    id = int(line.split(": ")[1])
+                line = file.readline().strip()
+                if line.startswith("Cartao:"):
+                    cartao = int(line.split(": ")[1])
+                usuario = Usuario(nome, id, cartao)
+                user.append(usuario)
+
+
+while True:
+    parar = False
+
+    os.system('cls')
+    print('----------------------------------->')
+    print('      -> Barbearia Junim :D <-\n\n(1) -> Cadastro Cliente\n(2) -> Consulta Fidelidade\n(3) -> Consultar Cliente\n')
+    esc = int(input('Informe Escolha: '))
+
+    if esc == 1:
+        os.system('cls')
+        rep = 1
+        cartao = 0
+        for i in range(rep):
+            nome = str(input('-> Informe Nome: '))
+            os.system('cls')
+            print('----------------------------------->\n')
+            print('Nome: {}'.format(nome))
+            print('\n----------------------------------->\n')
+            id = int(input('-> Informe ID: '))
+            os.system('cls')
+            print('----------------------------------->\n')
+            print('Nome: {}'.format(nome))
+            print('ID: {}'.format(id))
+            print('\n----------------------------------->\n')
+
+        for idss in user: #parar não cadastrar usuarios com mesmo id!
+            if id == idss.id:
+                os.system('cls')
+                print('----------------------------------->\n')
+                print('-> ID ja cadastrado')
+                print('\n----------------------------------->\n')
+                input('-> Pressione Enter para continuar...')
+                parar = True
+                break
+
+        if parar:
+            continue
+
+        cartao += 1
+        while True:
+            usuarios = Usuario(nome, id, cartao)
+            user.append(usuarios)
+            os.system('cls')
+            print('----------------------------------->\n')
+            print('-> Cadastrado com Sucesso!')
+            print('\n----------------------------------->\n')
+            break
+        with open("users.txt", "w") as file:
+            for usuario in user:
+                file.write("Nome: {}\nID: {}\nCartao: {}\n".format(usuario.nome, usuario.id, usuario.cartao))
+
+    elif esc == 2:
+        os.system('cls')
+        cartaos()
+
+    elif esc == 3:
+        os.system('cls')
+        localizar_id()
+
+    sair = str(input('-> Informe Sair (s/n): '))
+    sair = sair.lower()
+    if sair == 's':
+        break
